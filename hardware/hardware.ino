@@ -9,10 +9,8 @@ void lcd_begin() {
   delay(500);
 }
 void pin_mode() {
-  pinMode(btn_1, INPUT_PULLUP);
-  pinMode(btn_2, INPUT_PULLUP);
-  // digitalWrite(btn_1, 0);
-  // digitalWrite(btn_2, 0);
+  pinMode(btn_1, INPUT);
+  pinMode(btn_2, INPUT);
   pinMode(relay, OUTPUT);
   pinMode(buzzer, OUTPUT);
   digitalWrite(relay, 1);
@@ -32,7 +30,7 @@ bool add_finger() {
   src_print("PUT YOUR FINGER!", 0, 1);
   // Lấy ID hiện tại
   finger.getTemplateCount();
-  uint8_t current_id = finger.templateCount + 2;
+  uint8_t current_id = finger.templateCount + 1;
 
   // Chờ cho đến khi có ngón tay đặt vào
   while (finger.getImage() != FINGERPRINT_OK) finger.getImage();
@@ -47,6 +45,7 @@ bool add_finger() {
         if (finger.storeModel(current_id) == FINGERPRINT_OK) {
           screen.clear();
           src_print("FINGER ADDED!", 2, 0);
+          Serial.println(String("ADD") + "|" + String(current_id));
           delay(2000);
           screen.clear();
           lcd_begin();
@@ -73,6 +72,7 @@ bool delete_finger() {
     if (finger.deleteModel(id_delete) == FINGERPRINT_OK) {
       screen.clear();
       src_print("DELETED", 4, 0);
+      Serial.println(String("DEL") + "|" + String(id_delete));
       delay(1000);
       lcd_begin();
       return true;
@@ -105,9 +105,9 @@ void setup() {
   }
 }
 void loop() {
-  if (!digitalRead(btn_1)) bool add = add_finger();
-  if (!digitalRead(btn_2)) bool del = delete_finger();
-  if (finger.getImage() == FINGERPRINT_OK) {
+  if (digitalRead(btn_1)) bool add = add_finger();
+  else if (digitalRead(btn_2)) bool del = delete_finger();
+  else if (finger.getImage() == FINGERPRINT_OK) {
     uint8_t id = getFingerID();
     if (id != -1 && id != 255) {
       Serial.println(id);
