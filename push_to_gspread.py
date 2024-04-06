@@ -5,9 +5,10 @@ from datetime import datetime
 from gspread.exceptions import WorksheetNotFound
 from gspread.exceptions import SpreadsheetNotFound
 
-arduino = Serial(port='COM8', baudrate=9600)  # Replace by COM available
+# !importan
+arduino = Serial(port='COM?', baudrate=9600)  # Replace by COM available
 google_sheet = gspread.service_account(filename='service_account.json')
-your_mail = "thanh139ptit@gmail.com"
+your_mail = "email_user_for_api@gmail.com"
 
 sheet_name = "Class " + str(input("Nhập lớp: "))
 try:
@@ -36,6 +37,7 @@ def get_information(finger_id):
         return student_id, student_name
     except SpreadsheetNotFound:
         print("Vui lòng điền thông tin lớp học vào bảng tính 'DATA' trước!")
+        sys.exit()
         return None
 
 
