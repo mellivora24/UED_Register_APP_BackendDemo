@@ -5,3 +5,6 @@
   * gspread: pip install gspread
 * Bước 3: Truy cập Google Developer console đ tạo key API, sau đó download xuống ở dạng JSON
 * Bước 4: Copy nội dung và lưu vào tệp service_account.json
+
+  Follow me on Facebook: [https://www.facebook.com/mellivora24]
+  About me: [https://github.com/mellivora24]
